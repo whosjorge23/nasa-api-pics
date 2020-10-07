@@ -9,6 +9,7 @@ body {
   font-family: Verdana, sans-serif;
   font-size: 1rem;
   line-height: 1.8rem;
+  color: #2B2B2B
 }
 
 .container {
@@ -54,7 +55,7 @@ body {
 }
 
 .clickable {
-  color: dodgerblue;
+  color: #2A7FB9;
   cursor: pointer;
   user-select: none;
 }
@@ -116,6 +117,12 @@ body {
   display: none;
 }
 
+.ribbon {
+  height: 45px;
+  position: relative;
+  float: right;
+  top: -8px;
+}
 
 /* Large Smartphone (Vertical) */
 @media screen and (max-width: 800px) {

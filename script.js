@@ -7,9 +7,10 @@ const loader = document.querySelector('.loader')
 //NASA API
 const count = 10
 const apiKey = 'DEMO_KEY'
-const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${count}`
+// const apiUrl = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}&count=${count}`
 
 let resultsArray = []
+let favorites = {}
 
 function updateDOM() {
     resultsArray.forEach((result) => {
@@ -34,10 +35,18 @@ function updateDOM() {
         const cardTitle = document.createElement('h5')
         cardTitle.classList.add('card-title')
         cardTitle.textContent = result.title
+        //Favorite image
+        const imgFav = document.createElement('img')
+        imgFav.src = './loaf-ribbon.svg'
+        imgFav.setAttribute('height', '20px')
+        imgFav.setAttribute('position', 'relative')
+        imgFav.setAttribute('float', 'right')
+        imgFav.setAttribute('top', '-8px')
         //Save Text
         const saveText = document.createElement('p')
         saveText.classList.add('clickable')
         saveText.textContent = 'Add To Favorite'
+        saveText.setAttribute('onclick', `saveFavorite('${result.url}')`)
         //Card Text
         const cardText = document.createElement('p')
         cardText.textContent = result.explanation
@@ -53,6 +62,7 @@ function updateDOM() {
         copyright.textContent = ` ${copyrightResult}`
         //Append
         footer.append(date,copyright)
+        saveText.appendChild(imgFav)
         cardBody.append(cardTitle,saveText,cardText,footer)
         link.appendChild(image)
         card.append(link, cardBody)
@@ -73,6 +83,25 @@ async function getNasaPictures() {
         //Catch Error Here
         console.log('Error: ',error)
     }
+}
+
+//Add result to Favorites
+function saveFavorite(itemUrl) {
+    console.log(itemUrl)
+    //Loop through Results Array to select Favorite
+    resultsArray.forEach((item) => {
+        if (item.url.includes(itemUrl) && !favorites[itemUrl]) {
+            favorites[itemUrl] = item
+            console.log(JSON.stringify(favorites))
+            //Show Save Confirmation for 2 seconds
+            saveConfirmed.hidden = false
+            setTimeout(() => {
+                saveConfirmed.hidden = true
+            }, 2000)
+            //Set Favorite in localStorage
+            localStorage.setItem('nasaFavorites', JSON.stringify(favorites))
+        }
+    })
 }
 
 //On Load
